@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do liste</title>
+</head>
+<body>
+    <div id="app">
+    </div>
+
+    <!--
+    Oppgaven krever:
+    - MVC
+    - Arrays + objekter
+    - if/else
+    - funksjoner 
+    - state(ikke ferdig/ferdig)
+    -->
+
+    <script>
+
+        //Model
+        let model = {
+            oppgaver: []
+        }; 
+
+        vis(); 
+
+        function vis() {
+            let html = "<h2>To-do liste</h2>"; 
+
+            //input for ny oppgave 
+            html += `
+            <input id="tekst" placeholder="Ny oppgave">
+            <button onclick="leggTil()">Legg til</button> 
+            `; 
+
+            //loop gjennom alle oppgaver 
+            for (let i = 0; i < model.oppgaver.length; i++) {
+                let o = model.oppgaver[i]; 
+
+                html += "<div>"; 
+
+                html += o.tekst; 
+
+                if (o.ferdig) {
+                    html += " (ferdig)"; 
+                }
+
+                html += `
+                <button onclick="toggle(${i})">Ferdig</button>
+                <button onclick="slett(${i})">Slett</button> 
+                `; 
+
+                html += "</div>"; 
+            }
+            document.getElementById("app").innerHTML = html;    
+        }
+
+        //Controller
+        //legger til ny oppgave 
+        function leggTil() {
+            let tekst = document.getElementById("tekst").value; 
+
+            //legger objekter inn i et array 
+            model.oppgaver.push( {
+                tekst: tekst,  //tekst fra input
+                ferdig: false  //srarter som ikke ferdig 
+            }); 
+
+            vis(); 
+        }
+
+        //toggle ferdig-status 
+        function toggle(index) {
+
+            //! betyr "motsatt"
+            model.oppgaver[index].ferdig = !model.oppgaver[index].ferdig; 
+            vis(); 
+        }
+
+        function slett(index) {
+            //fjerner 1 element fra array 
+            model.oppgaver.splice(index, 1);
+            vis(); 
+        }
+
+    </script>
+</body>
+</html>

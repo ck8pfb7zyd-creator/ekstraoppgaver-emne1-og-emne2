@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistikk</title>
+</head>
+<body>
+    <div id="app"></div>
+
+    <!--
+    Oppgaven krever: 
+    - MVC 
+    - Arrays
+    - Loops
+    - if/else
+    - Variabler
+    - Beregninger 
+    -->
+
+    <script> 
+
+    //Model
+    let model = {
+        tall: []
+    }; 
+
+    //View 
+    //Tegner hele appen på nytt hver gang noe endres 
+    vis(); 
+
+    function vis() {
+        let html = "<h2>Statistikk</h2>"; 
+
+        //input + knapp 
+        html += `
+        <input id="tallInput" type="number" placeholder="Skriv et tall"> 
+        <button onclick="leggTil()">Legg til</button> 
+        <br><br>
+        `; 
+        
+        //vis liste med tall 
+        html += "<b>Tall:</b><br>"; 
+        for (let i = 0; i < model.tall.length; i ++) {
+            html += model.tall[i] + "<br>"; 
+        }
+
+        //bare vis statistikk hvis vi har tall 
+        if (model.tall.length > 0) {
+
+            let sum = 0;
+
+            //setter startverdi for min og max 
+            let min = model.tall[0];
+            let max = model.tall[0]; 
+
+            //lopp gjennom alle tall 
+            for (let i = 0; i < model.tall.length; i++) {
+                let t = model.tall[i]; 
+
+                //legger til i sum 
+                sum += t; 
+
+                //sjekker laveste verdi 
+                if (t < min) min = t; 
+
+                //sjekker høyeste verdi 
+                if (t > max) max = t; 
+            }
+            
+            //gjennomsnitt 
+            let snitt = sum / model.tall.length; 
+
+            html += `
+            <br>
+            <b>Sum:</b> ${sum}<br> 
+            <b>Gjennomsnitt:</b> ${snitt.toFixed(2)}<br>
+            <b>Min:</b> ${min}<br> 
+            <b>Max:</b> ${max} 
+            
+            `; 
+        }
+        document.getElementById("app").innerHTML = html; 
+    }
+
+    //Controller 
+    function leggTil() {
+        let verdi = Number(document.getElementById("tallInput").value); 
+
+        //stopper hvis ikke tall 
+        if (isNaN(verdi)) return; 
+
+        //legger til tallet i array 
+        model.tall.push(verdi); 
+
+        vis(); 
+    }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Game of thrones</title>
+</head>
+<body>
+    
+    <div id="app"></div>
+
+    <!--
+    Denne oppgaven krever:
+    - MVC
+    - Arrays + objekter
+    - Loops
+    - State(index + poeng)
+    - if/else
+    - Brukerinteraksjon 
+    -->
+
+    <script> 
+
+    //Model
+        let model = {
+        index: 0, //hvilket spørsmål er vi på
+        poeng: 0, //antall riktige svar 
+        spørsmål: [
+            {
+                tekst: "Hva heter sverdet til Jon Snow",
+                alternativer: ["Longclaw", "Ice", "Oathkeeper"], 
+                riktig: 0 //index til riktig svar 
+            }, 
+
+            {
+                tekst: "Hva heter den største dragen til Daenerys?",
+                alternativer: ["Rhaegal", "Viserion", "Drogon"],
+                riktig: 2
+            },
+
+            {
+                tekst: "Hvem drepte Joffrey Baratheon(egentlig)?",
+                alternativer: ["Tyrion", "Olenna Tyrell", "Cersei"],
+                riktig: 1 
+             }, 
+
+             { 
+                tekst: "Hva er det egentlige navnet til Jon Snow?",
+                alternativer: ["Aegon Targaryen", "Viserys Targaryen", "Daemon Targaryen"],
+                riktig: 0
+             }, 
+
+             {
+                tekst: "Hvilket hus styrer The Eyrie?",
+                alternativer: ["House Stark", "House Arryn", "House Tully"],
+                riktig: 1
+             }, 
+
+             {
+                tekst: "Hva er navnet på Tyrions søster?",
+                alternativer: ["Cersei", "Daenerys", "Sansa"],
+                riktig: 0
+             }, 
+
+             {
+                tekst: "Hvilken by kommer Arya til hvor hun trener med Faceless men?",
+                alternativer: ["Qarth", "Braavos", "Meereen"],
+                riktig: 1
+             }, 
+
+             {
+                tekst: "Hva heter hovedstaden i Westeros?",
+                alternativer: ["Winterfell", "King's Landing", "Casterly Rock"],
+                riktig: 1
+             }, 
+
+             {
+                tekst: "Hva heter ulvene til Stark-barna",
+                alternativer: ["Direwolves", "Dragons", "Wargs"],
+                riktig: 0
+             },
+
+             {
+                tekst: "Hva sier Hodor egentlig?",
+                alternativer: ["Hold the door", "Help the door", "Hide the door"],
+                riktig: 0
+             }
+
+        ]
+    }; 
+
+    //View
+    vis();
+
+    function vis() {
+
+        //hvis ferdig -> vis sluttresultat 
+        if (model.index >= model.spørsmål.length) {
+            document.getElementById("app").innerHTML = `
+            <h2>Ferdig!</h2> 
+            <p>Du fikk ${model.poeng} poeng </p> 
+            `; 
+            return; 
+        }
+
+        //henter nåværende spørsmål 
+        let spm = model.spørsmål[model.index];
+
+        let html = `<h2>${spm.tekst}</h2>`; 
+
+        //lager knapper for hvert svar 
+        for (let i = 0; i < spm.alternativer.length; i++) {
+            html += `
+            <button onclick="svar(${i})"> 
+                ${spm.alternativer[i]}
+                </button><br> 
+                `; 
+        }
+        document.getElementById("app").innerHTML = html; 
+     }
+
+     //Controller 
+     //når brukeren klikker et svar 
+     function svar(valgtIndex) {
+        let spm = model.spørsmål[model.index]; 
+
+        //sjekker om riktig
+        if (valgtIndex === spm.riktig) {
+            alert("Riktig!");
+            model.poeng++; //øker poeng 
+        } else {
+            alert("Feil"); 
+        }
+
+        //går videre til neste spørsmål 
+        model.index++;
+        vis(); 
+     }
+
+
+    </script>
+</body>
+</html>

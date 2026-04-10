@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontaktbok</title>
+</head>
+<body>
+<div id="app"></div>
+
+<!--
+Oppgaven krever:
+- MVC
+- Filter
+- State management
+- Input binding 
+- Arrays + objekter 
+-->
+
+<script>
+
+//Model
+//lagrer data + inputverdier + søk 
+let model = {
+    kontakter: [],       //liste med kontakter
+    søk: "",            //søketekst
+    navnInput: "",     //input state
+    telefonInput: ""  //input state 
+};
+
+//View
+vis();
+
+function vis() {
+
+    let html = "<h2>Kontaktbok</h2>";
+
+    //input (koblet til model)
+    html += `
+        <input id="navn" placeholder="Navn" value="${model.navnInput}"><br>
+        <input id="telefon" placeholder="Telefon" value="${model.telefonInput}"><br>
+        <button onclick="leggTil()">Legg til</button>
+        <br><br>
+
+        <input id="søk" placeholder="Søk" value="${model.søk}" oninput="søkEndret()">
+        <br><br>
+    `;
+
+    // liste
+    for (let i = 0; i < model.kontakter.length; i++) {
+        let k = model.kontakter[i];
+
+        //filtrerer(case-insensitive)
+        if (
+            model.søk === "" ||
+            k.navn.toLowerCase().includes(model.søk.toLowerCase())
+        ) {
+            html += `
+                ${k.navn} - ${k.telefon}
+                <button onclick="slett(${i})">X</button>
+                <br>
+            `;
+        }
+    }
+    //tegn UI
+    document.getElementById("app").innerHTML = html;
+}
+
+
+//Controller
+
+function leggTil() {
+    let navn = document.getElementById("navn").value;
+    let telefon = document.getElementById("telefon").value;
+
+    //stopp hvis tom input 
+    if (navn === "" || telefon === "") return;
+
+    //legg inn i array 
+    model.kontakter.push({
+        navn: navn,
+        telefon: telefon
+    });
+
+    //nullstill input (via model)
+    model.navnInput = "";
+    model.telefonInput = "";
+
+    vis();
+}
+
+
+function slett(index) {
+    model.kontakter.splice(index, 1);
+    vis();
+}
+
+
+//oppdaterer søk 
+function søkEndret() {
+    model.søk = document.getElementById("søk").value;
+    vis();
+}
+
+</script>
+
+</body>
+</html>

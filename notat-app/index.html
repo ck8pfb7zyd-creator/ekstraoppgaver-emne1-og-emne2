@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notater</title>
+</head>
+<body>
+    <div id="app"></div>
+
+    <!--
+    Oppgaven krever:
+    - MVC
+    - Arrays + objekter
+    - Loops
+    - Filter
+    - Brukerinteraksjon 
+    -->
+
+    <script>
+
+        //Model
+        //lagrer alle notater + valgt filter 
+        let model = {
+            notater: [],   
+            valgtKategori: "alle" //filter 
+        }; 
+
+        //View 
+        vis(); 
+
+        function vis() {
+            let html = "<h2>Notat-app</h2>"; 
+
+            //input for nytt notat 
+            html += `
+            <input id="tekst" placeholder="Skriv notat"> 
+
+            <select id="kategori"> 
+            <option value="jobb">Jobb</option> 
+            <option value="skole">Skole</option>
+            <option value="fritid">Fritid</option>
+            </select> 
+
+            <button onclick="leggTil()">Legg til</button> 
+            `; 
+
+            //filter.knapper 
+            html += `
+            <h3>Filtrer</h3> 
+            <button onclick="filtrer('alle')">Alle</button> 
+            <button onclick="filtrer('jobb')">Jobb</button> 
+            <button onclick="filtrer('skole')">Skole</button> 
+            <button onclick="filtrer('fritid')">Fritid</button> 
+            `; 
+
+            //liste over notater 
+            html += "<h3>Notater</h3>"; 
+
+            //loop gjennom alle notater 
+            for (let i = 0; i < model.notater.length; i++) {
+                let n = model.notater[i]; 
+            
+
+            //filter-logikk 
+            if (model.valgtKategori === "alle" || model.valgtKategori === n.kategori) {
+
+                html += `
+                <div> 
+                    ${n.tekst} (${n.kategori}) 
+
+                    <button onclick="slett(${i})">X</button> 
+                    </div>
+                    `; 
+            }
+          }
+
+          document.getElementById("app").innerHTML = html; 
+     } 
+
+
+     //Controller 
+
+     function leggTil()  {
+        let tekst = document.getElementById("tekst").value; 
+        let kategori = document.getElementById("kategori").value; 
+
+        //legger inn objekt i array 
+        model.notater.push({
+            tekst: tekst, 
+            kategori: kategori
+        }); 
+
+        vis(); 
+     }
+
+     //endre filter 
+     function filtrer(kat) {
+        model.valgtKategori = kat; 
+        vis(); 
+     }
+
+     //slett notat 
+     function slett(index) {
+        model.notater.splice(index, 1); 
+        vis(); 
+     }
+
+    </script>
+</body>
+</html>

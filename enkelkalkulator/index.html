@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enkel Kalkulator</title>
+</head>
+<body>
+    
+    <div id="app"></div>
+
+    <!--
+    Oppgaven krever:
+    - MVC
+    - Input -> model -> view
+    - Operator-logikk
+    - Feilhåndtering
+    -->
+
+    <script>
+        //Model
+        //lagrer input + resultat 
+        let model = {
+            tall1: 0,
+            tall2: 0, 
+            operator: "+", 
+            resultat: null
+        };
+
+        //View
+        vis(); 
+
+        function vis() {
+            let html = "<h2>Kalkulator</h2>"; 
+
+            //input + operator 
+            html += `
+            <input id="tall1" type="number" placeholder="Tall 1"><br> 
+            
+            <select id="operator"> 
+                <option value="+">+</option> 
+                <option value="-">-</option>
+                <option value="*">*</option> 
+                <option value="/">/</option> 
+                    </select><br>
+
+            <input id="tall2" type="number" placeholder="Tall 2"><br><br> 
+
+            <button onclick="beregn()">Beregn</button> 
+            <br><br> 
+            `; 
+        
+        //vis resultat hvis finnes 
+        if (model.resultat !== null) {
+            html += `<b>Resultat: ${model.resultat}</br><br>`; 
+        }
+        document.getElementById("app").innerHTML = html; 
+    } 
+
+    //Controller 
+    function beregn() {
+
+        //henter inputverdier 
+        let t1 = Number(document.getElementById("tall1").value); 
+        let t2 = Number(document.getElementById("tall2").value); 
+        let op = document.getElementById("operator").value; 
+
+        let resultat = 0; 
+
+        if (op === "+") {
+            resultat = t1 + t2; 
+
+        } else if (op === "-") {
+            resultat = t1 - t2; 
+
+        } else if (op === "*") {
+            resultat = t1 * t2; 
+
+        //unngå deling på 0
+        } else if (op === "/") {
+            if (t2 === 0) {
+                alert("Kan ikke dele på 0"); 
+            }
+            resultat = t1 / t2; 
+
+        }
+
+        //lagrer i model 
+        model.resultat = resultat; 
+
+        vis(); 
+    }
+
+    </script>
+</body>
+</html>

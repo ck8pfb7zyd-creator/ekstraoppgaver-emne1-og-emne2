@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vare-vurdering</title>
+</head>
+<body>
+
+    <!--
+    Oppgaven krever:
+    - MVC
+    - Arrays + objekter
+    - Loops
+    - Input -> model -> view 
+    - sortering 
+    -->
+
+<div id="app"></div>
+
+<script>
+
+//Model - her lagres data 
+let model = {
+    produkter: []
+};
+
+//View - tegner hele UI på nytt hver gang 
+vis();
+
+function vis() {
+
+    let html = "<h2>Butikk</h2>";
+
+    // Inputfelt for å legge til produkt 
+    html += `
+        <input id="navn" placeholder="Produktnavn"><br>
+        <input id="pris" type="number" placeholder="Pris"><br>
+        <input id="rating" type="number" min="1" max="5" placeholder="Rating (1-5)"><br>
+        <button onclick="leggTil()">Legg til</button>
+    `;
+
+    // Sorteringsknapper 
+    html += `
+        <h3>Sorter</h3>
+        <button onclick="sorterPris()">Pris</button>
+        <button onclick="sorterRating()">Rating</button>
+    `;
+ 
+    // Liste over produkter 
+    html += "<h3>Produkter</h3>";
+
+    for (let i = 0; i < model.produkter.length; i++) {
+        let p = model.produkter[i];
+
+        html += `
+            <div>
+                ${p.navn} - ${p.pris} kr - ⭐${p.rating}
+                <button onclick="slett(${i})">❌</button>
+            </div>
+        `;
+    }
+    //Tegner HTML på skjermen 
+    document.getElementById("app").innerHTML = html;
+}
+
+
+//Controller 
+
+//legg til nytt produkt - let henter verdier fra input 
+function leggTil() {
+    let navn = document.getElementById("navn").value;
+    let pris = Number(document.getElementById("pris").value);
+    let rating = Number(document.getElementById("rating").value);
+
+    //stopper hvis noe mangler 
+    if (!navn || !pris || !rating) return;
+
+    //legger objekt inn i array 
+    model.produkter.push({
+        navn: navn,
+        pris: pris,
+        rating: rating
+    });
+
+    vis();
+}
+
+
+function slett(index) {
+    //fjerner 1 element på index 
+    model.produkter.splice(index, 1);
+    vis();
+}
+
+//sortere pris (lav-høy)
+function sorterPris() {
+    model.produkter.sort(function(a, b) {
+        return a.pris - b.pris;
+    });
+    vis();
+}
+
+//sortere rating(høy-lav)
+function sorterRating() {
+    model.produkter.sort(function(a, b) {
+        return b.rating - a.rating;
+    });
+    vis();
+}
+
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div id="app"></div>
+
+    <script>
+
+        //Model 
+        let model = {
+            varer: []
+        }; 
+
+        //View
+        vis(); 
+
+        function vis() {
+            let html = "<h2>Handleliste med mengde</h2>"; 
+
+            html += `
+            <input id="navn" placeholder="Vare"> 
+            <input id="mengde" type="number" placeholder="Mengde">
+            <button onclick="leggTil()">Legg til</button> 
+            <br><br>  
+            `; 
+
+            for (let i = 0; i < model.varer.length; i++) {
+                let v = model.varer[i]; 
+
+                html += `
+                ${v.navn} (${v.mengde})
+                <button onclick="endreMengde(${i}, 1)">+</button> 
+                <button onclick="endreMengde(${i}, -1)">-</button>
+                <button onclick="slett(${i})">X</button> 
+                <br> 
+
+             `; 
+            }
+            document.getElementById("app").innerHTML = html; 
+        }
+
+        //Controller
+        function leggTil() {
+            let navn = document.getElementById("navn").value; 
+            let mengde = Number(document.getElementById("mengde").value); 
+
+            if (navn === "" || mengde <= 0) return; 
+
+            model.varer.push({
+                navn: navn,
+                mengde: mengde
+            }); 
+
+            document.getElementById("navn").value = ""; 
+            document.getElementById("mengde").value = ""; 
+
+            vis(); 
+
+        }
+
+        function endreMengde(index, endring) {
+            model.varer[index].mengde += endring; 
+
+            if (model.varer[index].mengde <= 0) {
+                model.varer.splice(index, 1); 
+            }
+            vis(); 
+        }
+
+        function slett(index) {
+            model.varer.splice(index, 1); 
+            vis(); 
+        }
+
+
+    </script>
+</body>
+</html>
